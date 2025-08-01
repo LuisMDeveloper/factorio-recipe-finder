@@ -51,14 +51,13 @@ export default function RecipeGrid() {
                             value={ingredientInput}
                             onChange={e => {
                                 setIngredientInput(e.target.value);
-                                setSelectedIngredient(null);
                             }}
                             className="border rounded px-3 py-2 w-full"
                             list="ingredient-list"
                         />
                         <datalist id="ingredient-list">
                             {filteredItems.map(item => (
-                                <option key={item.name} value={item.name} />
+                                <option key={item.id} value={item.name} />
                             ))}
                         </datalist>
                     </div>
