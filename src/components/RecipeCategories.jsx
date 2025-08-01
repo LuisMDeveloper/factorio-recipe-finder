@@ -4,7 +4,8 @@ import data from '../data/spa/data.json';
 
 export default function RecipeCategories() {
     const [activeTab, setActiveTab] = useState(data.categories[0].id);
-    console.log('activeTab:', activeTab);
+    const filteredRecipes = data.recipes.filter(recipe => recipe.category === activeTab);
+
     return (
         <div>
             <h2 className="text-xl font-bold mb-4">Recipe Categories</h2>
@@ -24,13 +25,24 @@ export default function RecipeCategories() {
                 ))}
             </div>
             <div className="p-4">
-                <p>
-                    Contenido de la categoría:{' '}
-                    <strong>
-                        {data.categories.find(cat => cat.id === activeTab).name}
-                    </strong>
-                </p>
-                {/* Aquí puedes renderizar más información según la categoría seleccionada */}
+                <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                    {filteredRecipes.length > 0 ? (
+                        filteredRecipes.map(recipe => (
+                            <li key={recipe.id} className="p-2 border rounded bg-gray-50">
+                                <span className="font-medium">{recipe.name}</span>
+                                <span className="ml-2 text-xs text-gray-500">({recipe.time}s)</span>
+                                <div className="text-xs text-gray-600 mt-1">
+                                    Ingredientes: {Object.entries(recipe.in).map(([k, v]) => `${v} ${k}`).join(', ')}
+                                </div>
+                                <div className="text-xs text-gray-600">
+                                    Producción: {Object.entries(recipe.out).map(([k, v]) => `${v} ${k}`).join(', ')}
+                                </div>
+                            </li>
+                        ))
+                    ) : (
+                        <li className="text-gray-400 italic">No recipes in this category.</li>
+                    )}
+                </ul>
             </div>
         </div>
     );
