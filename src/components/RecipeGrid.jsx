@@ -6,6 +6,7 @@ import data from '../data/spa/data.json';
 export default function RecipeGrid() {
     const [ingredientInput, setIngredientInput] = useState('');
     const [filterIngredients, setFilterIngredients] = useState([]);
+    const [minMatches, setMinMatches] = useState(0); // Número mínimo de coincidencias (0 para "todos los ingredientes")
 
     // Filtrar items por búsqueda
     const filteredItems = data.items.filter(item =>
@@ -38,7 +39,13 @@ export default function RecipeGrid() {
         console.log("recipe.in", recipe.in);
         if (filterIngredients.length === 0) return true;
         const recipeIngredients = Object.keys(recipe.in || {}).map(k => k.toLowerCase());
-        return filterIngredients.every(f => recipeIngredients.includes(f.toLowerCase()));
+        const matches = filterIngredients.filter(f => recipeIngredients.includes(f)).length;
+        if (minMatches === 0) {
+            // Caso especial: filtrar recetas que contengan *todos* los ingredientes seleccionados
+            return filterIngredients.every(f => recipeIngredients.includes(f));
+        }
+        // Filtrar recetas que cumplan con el número mínimo de coincidencias
+        return matches >= minMatches;
     });
 
     return (
@@ -76,6 +83,18 @@ export default function RecipeGrid() {
                     >
                         Agregar
                     </button>
+                </div>
+                {/* Control para el número mínimo de coincidencias */}
+                <div className="mt-2">
+                    <label className="mr-2">Número mínimo de coincidencias:</label>
+                    <input
+                        type="number"
+                        min="0"
+                        max={filterIngredients.length || 1}
+                        value={minMatches}
+                        onChange={e => setMinMatches(Number(e.target.value))}
+                        className="border rounded px-2 py-1 w-16"
+                    />
                 </div>
                 {/* Lista de ingredientes seleccionados */}
                 {filterIngredients.length > 0 && (
