@@ -3,10 +3,10 @@ import astroLogo from '../assets/astro.svg';
 import background from '../assets/background.svg';
 
 import '../styles/global.css';
-import RecipeCategories from './RecipeCategories.jsx';
+import RecipeGrid from './RecipeGrid.jsx';
 ---
 
 <div id="container">
   <h1 class="text-4xl font-semibold tracking-tight text-pretty">Welcome to the Factorio Recipe Finder</h1>
-  <RecipeCategories client:visible />
+  <RecipeGrid client:visible />
 </div>
