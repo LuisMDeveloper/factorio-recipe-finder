@@ -22,9 +22,9 @@ export default function RecipeGrid() {
         ) {
             // Usar el nombre correcto del item (case sensitive)
             const found = data.items.find(item => item.name.toLowerCase() === trimmed.toLowerCase());
-            setFilterIngredients([...filterIngredients, found.name]);
+            setFilterIngredients([...filterIngredients, found.id]);
         }
-        setIngredientInput('');
+        setIngredientInput(''); // Limpiar el input después de agregar
     };
 
     // Eliminar ingrediente de la lista de filtro
@@ -34,6 +34,8 @@ export default function RecipeGrid() {
 
     // Filtrar recetas por ingredientes seleccionados
     const filteredRecipes = data.recipes.filter(recipe => {
+        console.log("filterIngredients", filterIngredients);
+        console.log("recipe.in", recipe.in);
         if (filterIngredients.length === 0) return true;
         const recipeIngredients = Object.keys(recipe.in || {}).map(k => k.toLowerCase());
         return filterIngredients.every(f => recipeIngredients.includes(f.toLowerCase()));
@@ -98,7 +100,6 @@ export default function RecipeGrid() {
                     filteredRecipes.map(recipe => (
                         <li key={recipe.id} className="p-2 border rounded bg-gray-50">
                             <span className="font-medium">{recipe.name}</span>
-                            <span className="ml-2 text-xs text-gray-500">({recipe.time}s)</span>
                             <div className="text-xs text-gray-600 mt-1">
                                 Ingredientes: {Object.entries(recipe.in).map(([k, v]) => `${v} ${k}`).join(', ')}
                             </div>
