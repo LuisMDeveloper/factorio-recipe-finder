@@ -4,7 +4,9 @@ import data from '../data/spa/data.json';
 
 export default function RecipeCategories() {
     const [activeTab, setActiveTab] = useState(data.categories[0].id);
-    const filteredRecipes = data.recipes.filter(recipe => recipe.category === activeTab);
+    const filteredRecipes = data.recipes.filter(
+        recipe => recipe.category === activeTab && recipe.in && Object.keys(recipe.in).length > 0
+    );
 
     return (
         <div>
@@ -33,9 +35,6 @@ export default function RecipeCategories() {
                                 <span className="ml-2 text-xs text-gray-500">({recipe.time}s)</span>
                                 <div className="text-xs text-gray-600 mt-1">
                                     Ingredientes: {Object.entries(recipe.in).map(([k, v]) => `${v} ${k}`).join(', ')}
-                                </div>
-                                <div className="text-xs text-gray-600">
-                                    Producción: {Object.entries(recipe.out).map(([k, v]) => `${v} ${k}`).join(', ')}
                                 </div>
                             </li>
                         ))
