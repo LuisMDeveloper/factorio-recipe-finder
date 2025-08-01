@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import data from '../data/spa/data.json';
-
+import Icon from './Icon';
 
 export default function RecipeGrid() {
     const [ingredientInput, setIngredientInput] = useState('');
@@ -118,6 +118,7 @@ export default function RecipeGrid() {
                 {filteredRecipes.length > 0 ? (
                     filteredRecipes.map(recipe => (
                         <li key={recipe.id} className="p-2 border rounded bg-gray-50">
+                            <Icon id={recipe.id} />
                             <span className="font-medium">{recipe.name}</span>
                             <div className="text-xs text-gray-600 mt-1">
                                 Ingredientes: {Object.entries(recipe.in).map(([k, v]) => `${v} ${k}`).join(', ')}
